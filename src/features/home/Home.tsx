@@ -29,6 +29,20 @@ const optionsMock = {
     { name: "Jugo natural", price: 2.5 },
   ],
 };
+const circles = [
+  { size: "w-6 h-6", top: "top-10", left: "left-10", delay: "delay-0" },
+  { size: "w-4 h-4", top: "top-20", left: "left-1/3", delay: "delay-100" },
+  { size: "w-8 h-8", top: "top-5", left: "left-1/5", delay: "delay-200" },
+  { size: "w-3 h-3", top: "top-1/3", left: "left-2/3", delay: "delay-300" },
+  { size: "w-5 h-5", top: "top-1/4", left: "left-[80%]", delay: "delay-500" },
+  { size: "w-2 h-2", top: "top-[60%]", left: "left-[30%]", delay: "delay-700" },
+  { size: "w-7 h-7", top: "top-[70%]", left: "left-[70%]", delay: "delay-900" },
+  // 👇 Nuevas burbujas lejos del centro
+  { size: "w-4 h-4", top: "top-[10%]", left: "left-[5%]", delay: "delay-[1000ms]" }, // arriba izquierda
+  { size: "w-3 h-3", top: "top-[80%]", left: "left-[10%]", delay: "delay-[1100ms]" }, // abajo izquierda
+  { size: "w-5 h-5", top: "top-[85%]", left: "left-[85%]", delay: "delay-[1200ms]" }, // abajo derecha
+  { size: "w-3 h-3", top: "top-[5%]", left: "left-[90%]", delay: "delay-[1300ms]" }, // arriba derecha
+];
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,31 +75,30 @@ export default function Home() {
   };
 
   const buildExtras = () => {
-  const extras: { name: string; price: number }[] = [];
+    const extras: { name: string; price: number }[] = [];
 
-  adiciones.forEach((name) => {
-    const item = optionsMock.adiciones.find(opt => opt.name === name);
-    if (item) extras.push({ name: item.name, price: item.price });
-  });
+    adiciones.forEach((name) => {
+      const item = optionsMock.adiciones.find((opt) => opt.name === name);
+      if (item) extras.push({ name: item.name, price: item.price });
+    });
 
-  salsas.forEach((name) => {
-    const item = optionsMock.salsas.find(opt => opt.name === name);
-    if (item) extras.push({ name: item.name, price: item.price });
-  });
+    salsas.forEach((name) => {
+      const item = optionsMock.salsas.find((opt) => opt.name === name);
+      if (item) extras.push({ name: item.name, price: item.price });
+    });
 
-  if (papa) {
-    const item = optionsMock.papas.find(opt => opt.name === papa);
-    if (item) extras.push({ name: item.name, price: item.price });
-  }
+    if (papa) {
+      const item = optionsMock.papas.find((opt) => opt.name === papa);
+      if (item) extras.push({ name: item.name, price: item.price });
+    }
 
-  if (bebida) {
-    const item = optionsMock.bebidas.find(opt => opt.name === bebida);
-    if (item) extras.push({ name: item.name, price: item.price });
-  }
+    if (bebida) {
+      const item = optionsMock.bebidas.find((opt) => opt.name === bebida);
+      if (item) extras.push({ name: item.name, price: item.price });
+    }
 
-  return extras;
-};
-
+    return extras;
+  };
 
   const totalPrice = useMemo(() => {
     if (!selectedProduct) return 0;
@@ -99,8 +112,8 @@ export default function Home() {
     return base + totalAdiciones + totalSalsas + totalPapa + totalBebida;
   }, [selectedProduct, adiciones, salsas, papa, bebida]);
 
-
-  const imagenTemporal: string = "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png";
+  const imagenTemporal: string =
+    "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png";
   const products = [
     {
       product_id: 1,
@@ -146,7 +159,7 @@ export default function Home() {
       price: 7.99,
       categoryId: 1,
       image: imagenTemporal,
-    }
+    },
   ];
 
   const renderOptionLabel = (name: string, price: number, selected: boolean) => {
@@ -161,35 +174,66 @@ export default function Home() {
   };
 
   useEffect(() => {
-  if (isOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
-  return () => {
-    document.body.style.overflow = "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const resetExtras = () => {
+    setAdiciones([]);
+    setSalsas([]);
+    setPapa(null);
+    setBebida(null);
   };
-}, [isOpen]);
 
-const resetExtras = () => {
-  setAdiciones([]);
-  setSalsas([]);
-  setPapa(null);
-  setBebida(null);
-};
-
-useEffect(() => {
-  if (!isOpen) {
-    resetExtras(); // ← limpia los campos cuando se cierra el modal
-  }
-}, [isOpen]);
+  useEffect(() => {
+    if (!isOpen) {
+      resetExtras(); // ← limpia los campos cuando se cierra el modal
+    }
+  }, [isOpen]);
 
   return (
     <>
-      {/* <Navbar username="Mayra Alejandra Luna Beltran" /> */}
+      <header className="relative w-full  lg:h-80 bg-black overflow-hidden">
+        <div className="grid place-content-center relative z-[30]">
+          <img
+            src="/public/logo.png"
+            alt="Burger logo"
+            className="w-36 h-18 rounded-full drop-shadow-[0_0_40px_#000000]"
+            style={{
+              WebkitMaskImage: "radial-gradient(circle at center, black 40%, transparent 70%)",
+              maskImage: "radial-gradient(circle at center, black 40%, transparent 70%)",
+            }}
+          />
+        </div>
+        <h1
+          className="text-white text-center z-[30] text-6xl lg:text-8xl relative"
+          style={{ fontFamily: "Tagesschrift, serif" }}
+        >
+          Burger
+        </h1>
+        <h1
+          className="text-white text-center z-[30] text-6xl lg:text-8xl relative"
+          style={{ fontFamily: "Tagesschrift, serif" }}
+        >
+          Station
+        </h1>
 
-      <div className="relative min-h-screen bg-gray-100 p-4">
+        {circles.map((circle, i) => (
+          <span
+            key={i}
+            className={`absolute rounded-full bg-orange-500 opacity-80 animate-float ${circle.size} ${circle.top} ${circle.left} ${circle.delay}`}
+          />
+        ))}
+      </header>
+
+      <div className="relative min-h-screen bg-black p-4">
         <main className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:max-w-7xl md:m-auto">
           {products.map((product) => (
             <div
@@ -198,13 +242,14 @@ useEffect(() => {
                 setSelectedProduct(product);
                 setIsOpen(true);
               }}
-              className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center text-center w-full sm:w-3/4 md:w-1/2 lg:w-1/3 mb-6 md:m-auto cursor-pointer max-h-full min-h-full"
+              className="bg-transparent rounded-lg p-4 flex flex-col justify-center items-center text-center w-full sm:w-3/4 md:w-1/2 lg:w-1/3 mb-6 md:m-auto cursor-pointer max-h-full min-h-full
+    ring-2  border-1 shadow-[0_0_10px_#f97316]  drop-shadow-[0_0_20px_#f97316] transition-all duration-300 hover:drop-shadow-[0_0_40px_#f97316] hover:shadow-[0_0_15px_#fbbf24,0_0_30px_#fbbf24,0_0_45px_#fbbf24]"
             >
               <img src={imagenTemporal} alt="" className="mb-2 max-h-48 object-contain" />
               {/* <img src="/Montanesa.webp" alt="" className="mb-2 max-h-48 object-contain" /> */}
-              <h2 className="text-xl font-semibold">{product.name}</h2>
-              <span className="mb-2 text-sm text-gray-700 line-clamp-2">{product.description}</span>
-              <p className="text-2xl font-bold">${product.price.toFixed(2)}</p>
+              <h2 className="text-xl font-bold text-white"  style={{ fontFamily: "Tagesschrift, serif" }}>{product.name}</h2>
+              <span className="mb-2 text-sm text-white line-clamp-2">{product.description}</span>
+              <p className="text-2xl font-bold text-white">${product.price.toFixed(2)}</p>
             </div>
           ))}
         </main>
@@ -212,16 +257,14 @@ useEffect(() => {
         <AnimatePresence>
           {isOpen && selectedProduct && (
             <div>
-              
-                <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40" onClick={() => setIsOpen(false)}></div>
-              
+              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998]" onClick={() => setIsOpen(false)}></div>
 
               <motion.div
                 initial={isDesktop ? { x: "100%" } : { y: "100%" }}
                 animate={isDesktop ? { x: 0 } : { y: 0 }}
                 exit={isDesktop ? { x: "100%" } : { y: "100%" }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
-                className={`fixed z-50 bg-white shadow-2xl overflow-y-auto p-6 rounded-t-3xl ${
+                className={`fixed z-[9999] bg-white shadow-2xl overflow-y-auto p-6 rounded-t-3xl ${
                   isDesktop
                     ? "top-0 right-0 h-full  rounded-none rounded-l-3xl"
                     : "bottom-0 left-0 right-0 max-h-[100%]"
@@ -302,12 +345,12 @@ useEffect(() => {
                         </label>
                       ))}
                     </div>
-                  <AddToCartButton
-                    setIsOpen={setIsOpen}
-                    selectedProduct={{ ...selectedProduct, extras: buildExtras() }}
-                    unitPrice={totalPrice.toFixed(2)}
-                    resetExtras={resetExtras}
-                  />
+                    <AddToCartButton
+                      setIsOpen={setIsOpen}
+                      selectedProduct={{ ...selectedProduct, extras: buildExtras() }}
+                      unitPrice={totalPrice.toFixed(2)}
+                      resetExtras={resetExtras}
+                    />
                   </div>
                 </div>
               </motion.div>
