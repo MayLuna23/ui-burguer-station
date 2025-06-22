@@ -60,33 +60,6 @@ export default function Home() {
     return list.find((item) => item.name === name)?.price || 0;
   };
 
-  const buildExtras = () => {
-  const extras: { name: string; price: number }[] = [];
-
-  adiciones.forEach((name) => {
-    const item = optionsMock.adiciones.find(opt => opt.name === name);
-    if (item) extras.push({ name: item.name, price: item.price });
-  });
-
-  salsas.forEach((name) => {
-    const item = optionsMock.salsas.find(opt => opt.name === name);
-    if (item) extras.push({ name: item.name, price: item.price });
-  });
-
-  if (papa) {
-    const item = optionsMock.papas.find(opt => opt.name === papa);
-    if (item) extras.push({ name: item.name, price: item.price });
-  }
-
-  if (bebida) {
-    const item = optionsMock.bebidas.find(opt => opt.name === bebida);
-    if (item) extras.push({ name: item.name, price: item.price });
-  }
-
-  return extras;
-};
-
-
   const totalPrice = useMemo(() => {
     if (!selectedProduct) return 0;
 
@@ -160,31 +133,6 @@ export default function Home() {
     );
   };
 
-  useEffect(() => {
-  if (isOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
-
-  return () => {
-    document.body.style.overflow = "";
-  };
-}, [isOpen]);
-
-const resetExtras = () => {
-  setAdiciones([]);
-  setSalsas([]);
-  setPapa(null);
-  setBebida(null);
-};
-
-useEffect(() => {
-  if (!isOpen) {
-    resetExtras(); // ← limpia los campos cuando se cierra el modal
-  }
-}, [isOpen]);
-
   return (
     <>
       <Navbar username="Mayra Alejandra Luna Beltran" />
@@ -201,7 +149,6 @@ useEffect(() => {
               className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center text-center w-full sm:w-3/4 md:w-1/2 lg:w-1/3 mb-6 md:m-auto cursor-pointer max-h-full min-h-full"
             >
               <img src={imagenTemporal} alt="" className="mb-2 max-h-48 object-contain" />
-              {/* <img src="/Montanesa.webp" alt="" className="mb-2 max-h-48 object-contain" /> */}
               <h2 className="text-xl font-semibold">{product.name}</h2>
               <span className="mb-2 text-sm text-gray-700 line-clamp-2">{product.description}</span>
               <p className="text-2xl font-bold">${product.price.toFixed(2)}</p>
@@ -212,9 +159,9 @@ useEffect(() => {
         <AnimatePresence>
           {isOpen && selectedProduct && (
             <div>
-              
-                <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40" onClick={() => setIsOpen(false)}></div>
-              
+              {isDesktop && (
+                <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setIsOpen(false)}></div>
+              )}
 
               <motion.div
                 initial={isDesktop ? { x: "100%" } : { y: "100%" }}
@@ -224,7 +171,7 @@ useEffect(() => {
                 className={`fixed z-50 bg-white shadow-2xl overflow-y-auto p-6 rounded-t-3xl ${
                   isDesktop
                     ? "top-0 right-0 h-full  rounded-none rounded-l-3xl"
-                    : "bottom-0 left-0 right-0 max-h-[100%]"
+                    : "bottom-0 left-0 right-0 max-h-[100vh]"
                 }`}
               >
                 <div className="flex justify-between items-center mb-4">
@@ -234,7 +181,6 @@ useEffect(() => {
 
                 <div className=" lg:h-full">
                   <div className="flex flex-col justify-center items-center mb-4 lg:mb-0 lg:flex-1 lg:justify-center max-w-md mx-auto ">
-                    {/* <img src={"/Montanesa.webp"} alt={selectedProduct.name} className="h-64 object-contain mb-2" /> */}
                     <img src={imagenTemporal} alt={selectedProduct.name} className="h-64 object-contain mb-2" />
                     <p className="text-gray-600 text-center px-4 mb-2 break-words">{selectedProduct.description}</p>
                     <p className="text-lg font-bold text-center">${selectedProduct.price.toFixed(2)}</p>
@@ -302,12 +248,11 @@ useEffect(() => {
                         </label>
                       ))}
                     </div>
-                  <AddToCartButton
-                    setIsOpen={setIsOpen}
-                    selectedProduct={{ ...selectedProduct, extras: buildExtras() }}
-                    unitPrice={totalPrice.toFixed(2)}
-                    resetExtras={resetExtras}
-                  />
+                    <AddToCartButton
+                      setIsOpen={setIsOpen}
+                      selectedProduct={selectedProduct}
+                      unitPrice={totalPrice.toFixed(2)}
+                    />
                   </div>
                 </div>
               </motion.div>

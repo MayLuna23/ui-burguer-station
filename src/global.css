@@ -1,0 +1,18 @@
+/* scroll-custom.css */
+.scrollbar-light::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-light::-webkit-scrollbar-track {
+  background: #f3f4f6; /* gray-100 */
+}
+
+.scrollbar-light::-webkit-scrollbar-thumb {
+  background-color: #d1d5db; /* gray-300 */
+  border-radius: 9999px;
+}
+
+.scrollbar-light {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
