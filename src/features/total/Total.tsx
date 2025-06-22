@@ -1,12 +1,25 @@
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
+
 
 interface AddToCartButtonProps {
-  unitPrice: number; // Precio unitario, por ejemplo 28900
+  unitPrice: number;
+  setIsOpen: (isOpen: boolean) => void;
+  selectedProduct: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    image: string;
+    category?: string;
+  };
 }
 
-export const AddToCartButton = ({ unitPrice }: AddToCartButtonProps) => {
+export const AddToCartButton = ({ unitPrice, selectedProduct, setIsOpen }: AddToCartButtonProps) => {
   const [quantity, setQuantity] = useState(1);
 
+
+  const { addItem } = useCart()
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -18,9 +31,9 @@ export const AddToCartButton = ({ unitPrice }: AddToCartButtonProps) => {
   };
 
   const formatPrice = (price: number) => {
-    return price.toLocaleString("es-CO", {
+    return price.toLocaleString("en-US", {
       style: "currency",
-      currency: "COP",
+      currency: "USD",
       minimumFractionDigits: 0,
     });
   };
@@ -48,7 +61,7 @@ export const AddToCartButton = ({ unitPrice }: AddToCartButtonProps) => {
       </div>
 
       {/* Botón Agregar */}
-      <button className="flex-1 flex justify-between items-center bg-gradient-to-r from-orange-500 to-orange-400  font-semibold px-5 py-3 rounded-xl shadow-md min-w-[180px]">
+      <button className="flex-1 flex justify-between items-center bg-gradient-to-r from-orange-500 to-orange-400  font-semibold px-5 py-3 rounded-xl shadow-md min-w-[180px]" onClick={() => {addItem(selectedProduct), setIsOpen(false)}}>
         <span className="text-white">Agregar</span>
         <span className="text-white">{formatPrice(quantity * unitPrice)}</span>
       </button>

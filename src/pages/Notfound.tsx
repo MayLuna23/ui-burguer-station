@@ -7,7 +7,7 @@ export default function NotFound() {
       <div className="max-w-md w-full text-center">
         <h1 className="text-6xl font-bold text-orange-600 mb-4">404</h1>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-          Pagina no encontrada
+          Página no encontrada
         </h2>
 
         <Link

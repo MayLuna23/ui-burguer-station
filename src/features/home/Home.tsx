@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AddToCartButton } from "@/features/total/Total";
+import Navbar from "@/components/Navbar";
 
 const optionsMock = {
   adiciones: [
@@ -46,12 +47,7 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleCheck = (
-    name: string,
-    list: string[],
-    setList: (val: string[]) => void,
-    limit: number
-  ) => {
+  const toggleCheck = (name: string, list: string[], setList: (val: string[]) => void, limit: number) => {
     if (list.includes(name)) {
       setList(list.filter((item) => item !== name));
     } else if (list.length < limit) {
@@ -67,61 +63,57 @@ export default function Home() {
     if (!selectedProduct) return 0;
 
     const base = selectedProduct.price;
-    const totalAdiciones = adiciones.reduce(
-      (sum, name) => sum + getPrice(name, optionsMock.adiciones),
-      0
-    );
-    const totalSalsas = salsas.reduce(
-      (sum, name) => sum + getPrice(name, optionsMock.salsas),
-      0
-    );
+    const totalAdiciones = adiciones.reduce((sum, name) => sum + getPrice(name, optionsMock.adiciones), 0);
+    const totalSalsas = salsas.reduce((sum, name) => sum + getPrice(name, optionsMock.salsas), 0);
     const totalPapa = papa ? getPrice(papa, optionsMock.papas) : 0;
     const totalBebida = bebida ? getPrice(bebida, optionsMock.bebidas) : 0;
 
     return base + totalAdiciones + totalSalsas + totalPapa + totalBebida;
   }, [selectedProduct, adiciones, salsas, papa, bebida]);
 
+
+  const imagenTemporal: string = "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png";
   const products = [
     {
-      id: 1,
+      product_id: 1,
       title: "El Ranchero",
-      description: "Pollo a la parrilla marinado, tocino crujiente, queso provolone, aros de cebolla fritos y salsa ranch.",
+      description:
+        "rilla marinado, tocino crujiente, queso provolone, aros de cebolla fritos y salsa ranch. rilla marinado, tocino crujiente, queso provolone, aros de cebolla fritos y salsa ranchrilla marinado, tocino crujiente, queso provolone, aros de cebolla fritos y salsa ranch",
       price: 5.99,
-      image:
-        "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png",
+      categoryId: 1,
     },
     {
-      id: 2,
-      title: "Hamburguesa Clásica",
-      description: "Deliciosa hamburguesa con carne de res y queso cheddar.",
-      price: 5.99,
-      image:
-        "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png",
+      product_id: 2,
+      title: "El Picante",
+      description:
+        "rilla de pollo empanizada, jalapeños, queso pepper jack, lechuga y salsa sriracha. rilla de pollo empanizada, jalapeños, queso pepper jack, lechuga y salsa sriracharilla de pollo empanizada, jalapeños, queso pepper jack, lechuga y salsa sriracha",
+      price: 6.49,
+      categoryId: 1,
     },
     {
-      id: 3,
-      title: "Hamburguesa Clásica",
-      description: "Deliciosa hamburguesa con carne de res y queso cheddar.",
-      price: 5.99,
-      image:
-        "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png",
+      product_id: 3,
+      title: "El Clásico",
+      description:
+        "rilla de res a la parrilla, lechuga, tomate, cebolla y mayonesa. rilla de res a la parrilla, lechuga, tomate, cebolla y mayonesarilla de res a la parrilla, lechuga, tomate, cebolla y mayonesa",
+      price: 4.99,
+      categoryId: 1,
     },
     {
-      id: 4,
-      title: "Hamburguesa Clásica",
-      description: "Deliciosa hamburguesa con carne de res y queso cheddar.",
-      price: 5.99,
-      image:
-        "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png",
+      product_id: 4,
+      title: "El Vegetariano",
+      description:
+        "hamburguesa de garbanzos con aguacate, espinacas frescas y salsa de yogur. hamburguesa de garbanzos con aguacate, espinacas frescas y salsa de yogurhamburguesa de garbanzos con aguacate, espinacas frescas y salsa de yogur",
+      price: 5.49,
+      categoryId: 1,
     },
     {
-      id: 5,
-      title: "Hamburguesa Clásica",
-      description: "Deliciosa hamburguesa con carne de res y queso cheddar.",
-      price: 5.99,
-      image:
-        "https://png.pngtree.com/png-vector/20231016/ourmid/pngtree-burger-food-png-free-download-png-image_10199386.png",
-    },
+      product_id: 5,
+      title: "El BBQ",
+      description:
+        "rilla de cerdo desmenuzado con salsa BBQ ahumada, cebolla morada encurtida y coleslaw. rilla de cerdo desmenuzado con salsa BBQ ahumada, cebolla morada encurtida y coleslawrilla de cerdo desmenuzado con salsa BBQ ahumada, cebolla morada encurtida y coleslaw",
+      price: 7.99,
+      categoryId: 1,
+    }
   ];
 
   const renderOptionLabel = (name: string, price: number, selected: boolean) => {
@@ -136,178 +128,137 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gray-100 p-4">
-      <main className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            onClick={() => {
-              setSelectedProduct(product);
-              setIsOpen(true);
-            }}
-            className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center text-center w-full sm:w-3/4 md:w-1/2 lg:w-1/3 mb-6 md:m-auto cursor-pointer"
-          >
-            <img
-              src={product.image}
-              alt=""
-              className="mb-2 max-h-48 object-contain"
-            />
-            <h2 className="text-xl font-semibold">{product.title}</h2>
-            <span className="mb-2">{product.description}</span>
-            <p className="text-2xl font-bold">${product.price.toFixed(2)}</p>
-          </div>
-        ))}
-      </main>
+    <>
+      <Navbar username="Mayra Alejandra Luna Beltran" />
 
-      <AnimatePresence>
-        {isOpen && selectedProduct && (
-          <div>
-            {isDesktop && (
-              <div
-                className="fixed inset-0 bg-black opacity-50 z-40"
-                onClick={() => setIsOpen(false)}
-              ></div>
-            )}
-
-            <motion.div
-              initial={isDesktop ? { x: "100%" } : { y: "100%" }}
-              animate={isDesktop ? { x: 0 } : { y: 0 }}
-              exit={isDesktop ? { x: "100%" } : { y: "100%" }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className={`fixed z-50 bg-white shadow-2xl overflow-y-auto p-6 rounded-t-3xl ${
-                isDesktop
-                  ? "top-0 right-0 h-full w-1/2 rounded-none rounded-l-3xl"
-                  : "bottom-0 left-0 right-0 max-h-[100vh]"
-              }`}
+      <div className="relative min-h-screen bg-gray-100 p-4">
+        <main className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:max-w-7xl md:m-auto">
+          {products.map((product) => (
+            <div
+              key={product.product_id}
+              onClick={() => {
+                setSelectedProduct(product);
+                setIsOpen(true);
+              }}
+              className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-center items-center text-center w-full sm:w-3/4 md:w-1/2 lg:w-1/3 mb-6 md:m-auto cursor-pointer max-h-full min-h-full"
             >
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">{selectedProduct.title}</h2>
-                <button onClick={() => setIsOpen(false)}>✕</button>
-              </div>
+              <img src={imagenTemporal} alt="" className="mb-2 max-h-48 object-contain" />
+              <h2 className="text-xl font-semibold">{product.title}</h2>
+              <span className="mb-2 text-sm text-gray-700 line-clamp-2">{product.description}</span>
+              <p className="text-2xl font-bold">${product.price.toFixed(2)}</p>
+            </div>
+          ))}
+        </main>
 
-              <div className=" lg:h-full">
-                <div className="flex flex-col justify-center items-center mb-4 lg:mb-0 lg:flex-1 lg:justify-center ">
-                  <img
-                    src={selectedProduct.image}
-                    alt={selectedProduct.title}
-                    className="h-64 object-contain mb-2"
-                  />
-                  <p className="text-gray-600 text-center px-4 mb-2">
-                    {selectedProduct.description}
-                  </p>
-                  <p className="text-lg font-bold text-center">
-                    ${selectedProduct.price.toFixed(2)}
-                  </p>
+        <AnimatePresence>
+          {isOpen && selectedProduct && (
+            <div>
+              {isDesktop && (
+                <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setIsOpen(false)}></div>
+              )}
+
+              <motion.div
+                initial={isDesktop ? { x: "100%" } : { y: "100%" }}
+                animate={isDesktop ? { x: 0 } : { y: 0 }}
+                exit={isDesktop ? { x: "100%" } : { y: "100%" }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className={`fixed z-50 bg-white shadow-2xl overflow-y-auto p-6 rounded-t-3xl ${
+                  isDesktop
+                    ? "top-0 right-0 h-full  rounded-none rounded-l-3xl"
+                    : "bottom-0 left-0 right-0 max-h-[100vh]"
+                }`}
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold">{selectedProduct.title}</h2>
+                  <button onClick={() => setIsOpen(false)}>✕</button>
                 </div>
 
-                <div className="lg:flex-1 lg:flex lg:m-auto lg:flex-col lg:justify-center lg:max-w-3/4">
-                  <div className="mb-4">
-                    <h3 className="font-semibold">Adiciones (máximo 3)</h3>
-                    {optionsMock.adiciones.map((item) => (
-                      <label
-                        key={item.name}
-                        className="flex items-center justify-between mb-1"
-                      >
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked={adiciones.includes(item.name)}
-                          onChange={() =>
-                            toggleCheck(item.name, adiciones, setAdiciones, 3)
-                          }
-                        />
-                        {renderOptionLabel(
-                          item.name,
-                          item.price,
-                          adiciones.includes(item.name)
-                        )}
-                      </label>
-                    ))}
+                <div className=" lg:h-full">
+                  <div className="flex flex-col justify-center items-center mb-4 lg:mb-0 lg:flex-1 lg:justify-center max-w-md mx-auto ">
+                    <img src={imagenTemporal} alt={selectedProduct.title} className="h-64 object-contain mb-2" />
+                    <p className="text-gray-600 text-center px-4 mb-2 break-words">{selectedProduct.description}</p>
+                    <p className="text-lg font-bold text-center">${selectedProduct.price.toFixed(2)}</p>
                   </div>
 
-                  <div className="mb-4">
-                    <h3 className="font-semibold">Salsas (máximo 2)</h3>
-                    {optionsMock.salsas.map((item) => (
-                      <label
-                        key={item.name}
-                        className="flex items-center justify-between mb-1"
-                      >
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked={salsas.includes(item.name)}
-                          onChange={() =>
-                            toggleCheck(item.name, salsas, setSalsas, 2)
-                          }
-                        />
-                        {renderOptionLabel(
-                          item.name,
-                          item.price,
-                          salsas.includes(item.name)
-                        )}
-                      </label>
-                    ))}
-                  </div>
+                  <div className="lg:flex-1 lg:flex lg:m-auto lg:flex-col lg:justify-center ">
+                    <div className="mb-4">
+                      <h3 className="font-semibold">Adiciones (máximo 3)</h3>
+                      {optionsMock.adiciones.map((item) => (
+                        <label key={item.name} className="flex items-center justify-between mb-1">
+                          <input
+                            type="checkbox"
+                            className="mr-2"
+                            checked={adiciones.includes(item.name)}
+                            onChange={() => toggleCheck(item.name, adiciones, setAdiciones, 3)}
+                          />
+                          {renderOptionLabel(item.name, item.price, adiciones.includes(item.name))}
+                        </label>
+                      ))}
+                    </div>
 
-                  <div className="mb-4">
-                    <h3 className="font-semibold">Tipo de Papas</h3>
-                    {optionsMock.papas.map((item) => (
-                      <label
-                        key={item.name}
-                        className="flex items-center justify-between mb-1"
-                      >
-                        <input
-                          type="radio"
-                          name="papa"
-                          className="mr-2"
-                          checked={papa === item.name}
-                          onChange={() => setPapa(item.name)}
-                        />
-                        {renderOptionLabel(
-                          item.name,
-                          item.price,
-                          papa === item.name
-                        )}
-                      </label>
-                    ))}
-                  </div>
+                    <div className="mb-4">
+                      <h3 className="font-semibold">Salsas (máximo 2)</h3>
+                      {optionsMock.salsas.map((item) => (
+                        <label key={item.name} className="flex items-center justify-between mb-1">
+                          <input
+                            type="checkbox"
+                            className="mr-2"
+                            checked={salsas.includes(item.name)}
+                            onChange={() => toggleCheck(item.name, salsas, setSalsas, 2)}
+                          />
+                          {renderOptionLabel(item.name, item.price, salsas.includes(item.name))}
+                        </label>
+                      ))}
+                    </div>
 
-                  <div className="mb-4">
-                    <h3 className="font-semibold">Bebida</h3>
-                    {optionsMock.bebidas.map((item) => (
-                      <label
-                        key={item.name}
-                        className="flex items-center justify-between mb-1"
-                      >
-                        <input
-                          type="radio"
-                          name="bebida"
-                          className="mr-2"
-                          checked={bebida === item.name}
-                          onChange={() => setBebida(item.name)}
-                        />
-                        {renderOptionLabel(
-                          item.name,
-                          item.price,
-                          bebida === item.name
-                        )}
-                      </label>
-                    ))}
-                  </div>
+                    <div className="mb-4">
+                      <h3 className="font-semibold">Tipo de Papas</h3>
+                      {optionsMock.papas.map((item) => (
+                        <label key={item.name} className="flex items-center justify-between mb-1">
+                          <input
+                            type="radio"
+                            name="papa"
+                            className="mr-2"
+                            checked={papa === item.name}
+                            onChange={() => setPapa(item.name)}
+                          />
+                          {renderOptionLabel(item.name, item.price, papa === item.name)}
+                        </label>
+                      ))}
+                    </div>
 
-                  {/* <div className="text-xl font-bold text-right mb-4">
+                    <div className="mb-4">
+                      <h3 className="font-semibold">Bebida</h3>
+                      {optionsMock.bebidas.map((item) => (
+                        <label key={item.name} className="flex items-center justify-between mb-1">
+                          <input
+                            type="radio"
+                            name="bebida"
+                            className="mr-2"
+                            checked={bebida === item.name}
+                            onChange={() => setBebida(item.name)}
+                          />
+                          {renderOptionLabel(item.name, item.price, bebida === item.name)}
+                        </label>
+                      ))}
+                    </div>
+
+                    {/* <div className="text-xl font-bold text-right mb-4">
                     Total: ${totalPrice.toFixed(2)}
                   </div> */}
 
-                    <AddToCartButton 
-                      unitPrice={totalPrice.toFixed(2)}/>
-
+                    <AddToCartButton
+                      setIsOpen={setIsOpen}
+                      selectedProduct={selectedProduct}
+                      unitPrice={totalPrice.toFixed(2)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   );
 }
