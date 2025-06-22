@@ -23,8 +23,8 @@ export default function CartSidebar() {
   return (
     <div>
       {/* Cart Button */}
-      <button onClick={() => setIsOpen(!isOpen)} className="relative p-2 rounded-full hover:bg-gray-100 transition">
-        <ShoppingCart className="h-6 w-6 text-gray-700" />
+      <button onClick={() => setIsOpen(!isOpen)} className="relative p-2 rounded-full">
+        <ShoppingCart color="white" className="h-6 w-6" />
         {cartItems.length > 0 && (
           <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
             {cartItems.reduce((acc, item) => acc + item.quantity, 0)}

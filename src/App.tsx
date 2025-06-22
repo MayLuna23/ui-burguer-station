@@ -1,17 +1,19 @@
 import AppRouter from "./router";
 import "./App.css";
 import { CartProvider } from "./context/CartContext";
-import Navbar from "./components/Navbar";
+
 import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 
 export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <BrowserRouter>
-        <CartProvider>
-          <Navbar username="Mayra Alejandra Luna Beltran" />
-          <AppRouter />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <AppRouter />
+          </CartProvider>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );

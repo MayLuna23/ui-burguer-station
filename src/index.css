@@ -7,3 +7,12 @@ p {
 h1 {
     margin: 0
 }
+
+input {
+    color: white;
+}
+
+button {
+    color: white;
+    cursor: pointer;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { Minus, Plus } from "lucide-react";
 
 interface AddToCartButtonProps {
   unitPrice: number;
@@ -63,11 +64,11 @@ export const AddToCartButton = ({ unitPrice, selectedProduct, setIsOpen, resetEx
           disabled={quantity === 1}
           className={`text-xl font-bold px-2 ${quantity === 1 ? "text-gray-300" : "text-black"}`}
         >
-          −
+          <p className="text-black"><Minus /></p>
         </button>
         <span className="mx-3 text-lg font-semibold">{quantity}</span>
-        <button onClick={handleIncrease} className="text-xl font-bold px-2 text-black">
-          +
+        <button onClick={handleIncrease} className="text-xl font-bold px-2 ">
+          <p className="text-black"><Plus /></p>
         </button>
       </div>
 
