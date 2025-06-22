@@ -18,7 +18,6 @@ export default function Navbar({ username }: NavbarProps) {
   }, [cartItems]);
 
   return (
-    <>
       <nav className="bg-white shadow-md px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -37,6 +36,5 @@ export default function Navbar({ username }: NavbarProps) {
           <CartSidebar />
         </div>
       </nav>
-    </>
   );
 }

@@ -187,7 +187,7 @@ useEffect(() => {
 
   return (
     <>
-      <Navbar username="Mayra Alejandra Luna Beltran" />
+      {/* <Navbar username="Mayra Alejandra Luna Beltran" /> */}
 
       <div className="relative min-h-screen bg-gray-100 p-4">
         <main className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:max-w-7xl md:m-auto">
