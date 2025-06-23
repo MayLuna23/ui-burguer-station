@@ -1,7 +1,6 @@
 @tailwind utilities;
 
 p {
-    margin: 0;
 }
 
 h1 {
@@ -16,3 +15,4 @@ button {
     color: white;
     cursor: pointer;
 }
+

@@ -21,6 +21,7 @@ interface CartContextType {
   addItem: (item: Product) => void;
   total: number;
   removeItem: (item: Product) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -29,6 +30,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useLocalStorageState<CartItem[]>("cartItems", {
     defaultValue: [],
   });
+
+  const clearCart = () => setCartItems([]);
 
   const addItem = (item: Product) => {
     setCartItems((prev) => {
@@ -95,7 +98,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cartItems, addItem, removeItem, total }}>
+    <CartContext.Provider value={{ cartItems, addItem, removeItem, total, clearCart }}>
       {children}
     </CartContext.Provider>
   );

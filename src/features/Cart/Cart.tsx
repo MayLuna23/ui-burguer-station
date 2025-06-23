@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
-import { ShoppingCart, Trash2 } from "lucide-react";
+import { ShoppingCart, Trash2, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function CartSidebar() {
@@ -52,13 +52,13 @@ export default function CartSidebar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 flex flex-col p-4"
+              className="fixed top-0 right-0 h-full w-90 bg-white shadow-xl z-50 flex flex-col p-4"
             >
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">Tu Carrito</h2>
                 <button onClick={() => setIsOpen(false)} className="text-xl">
-                  ✕
+                  <X color="black" />
                 </button>
               </div>
 
@@ -72,7 +72,7 @@ export default function CartSidebar() {
                     {cartItems.map((item, idx) => (
                       <div key={idx} className="flex items-center space-x-4 border-b pb-2">
                         <section className="w-1/2">
-                          <img src={item.image} alt={item.name} className="w-20 h-20 object-contain rounded" />
+                          <img src={`${item.product_id}.webp`} alt={item.name} className="w-20 h-20 object-contain rounded" />
                         </section>
                         <section className="w-full relative">
                           <h3 className="font-semibold text-sm">{item.name}</h3>
@@ -98,7 +98,7 @@ export default function CartSidebar() {
                             className="absolute top-0 right-0 text-xs text-red-500 hover:text-red-700"
                             title="Eliminar"
                           >
-                            <Trash2 size={"1.2rem"} />
+                            <Trash2 size={"1.2rem"} color="black" />
                           </button>
                         </section>
                       </div>
@@ -115,10 +115,10 @@ export default function CartSidebar() {
                   </div> */}
                     <Link to="/checkout" onClick={() => setIsOpen(false)}>
                       <button className="flex justify-between pl-12 pr-12  w-full bg-orange-500  font-semibold py-3 rounded-xl shadow-md mt-4">
-                        <p className="text-white flex">Pagar</p>
-                        <p className="text-white">
+                        <span className="text-white flex">Pagar</span>
+                        <span className="text-white">
                           ${cartItems.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2)}
-                        </p>
+                        </span>
                       </button>
                     </Link>
                   </div>
