@@ -3,7 +3,6 @@ import ConfirmModal from "@/components/Modal";
 import SpinnerModal from "@/components/SpinnerModal";
 import Navbar from "@/components/Navbar";
 import { useCart } from "@/context/CartContext";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { BASE_URL } from "@/api";
@@ -11,11 +10,9 @@ import { BASE_URL } from "@/api";
 export default function Checkout() {
   useDocumentTitle("Checkout");
   const { cartItems, clearCart } = useCart();
-  const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(true);
-  console.log(cartItems);
   const grandTotal = cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
 
   const handleConfirmOrder = async () => {

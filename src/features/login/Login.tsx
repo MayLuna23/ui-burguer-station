@@ -96,7 +96,6 @@ export default function LoginPage() {
         },
       });
 
-      console.log("✅ Respuesta de la API:", response);
 
       if (isRegister && response.data.statusCode === 201) {
         setForm({
@@ -108,7 +107,6 @@ export default function LoginPage() {
         setShowConfirmModal(true);
       } else if (!isRegister && response.data.statusCode === 200) {
         login(response.data.data.jwt, response.data.data.userName);
-        console.log("✅ Token guardado en localStorage");
         navigate("/");
       } else {
         setFormErrors({

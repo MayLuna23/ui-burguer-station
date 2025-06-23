@@ -19,12 +19,12 @@ interface AddToCartButtonProps {
 
 export const AddToCartButton = ({ unitPrice, selectedProduct, setIsOpen, resetExtras }: AddToCartButtonProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState({});
+  // const [product, setProduct] = useState({});
   const { addItem } = useCart();
 
-  useEffect(() => {
-    setProduct(selectedProduct);
-  }, [selectedProduct]);
+  // useEffect(() => {
+  //   setProduct(selectedProduct);
+  // }, [selectedProduct]);
 
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -46,12 +46,11 @@ export const AddToCartButton = ({ unitPrice, selectedProduct, setIsOpen, resetEx
 
   const addQuantityToItem = () => {
     const itemToAdd = {
-      ...product,
+      ...selectedProduct,
       quantity: quantity,
       totalPrice: quantity * unitPrice,
       extras: selectedProduct.extras ?? [],
     };
-    console.log(itemToAdd);
     addItem(itemToAdd);
   };
 

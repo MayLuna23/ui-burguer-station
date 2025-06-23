@@ -18,7 +18,7 @@ type CartItem = Product & { quantity: number; totalPrice: number };
 
 interface CartContextType {
   cartItems: CartItem[];
-  addItem: (item: Product) => void;
+  addItem: (item: Product & { quantity?: number; totalPrice?: number }) => void;
   total: number;
   removeItem: (item: Product) => void;
   clearCart: () => void;
