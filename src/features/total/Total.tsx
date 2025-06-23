@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { Minus, Plus } from "lucide-react";
 
@@ -10,7 +10,7 @@ interface AddToCartButtonProps {
     product_id: number;
     name: string;
     price: number;
-    image: string;
+    image?: string;
     categoryId: number;
     description?: string | null;
     extras?: { name: string; price: number }[];

@@ -2,10 +2,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AddToCartButton } from "@/features/total/Total";
 
 type Product = {
-  name: string;
-  description: string;
-  price: number;
   product_id: number;
+  name: string;
+  price: number;
+  description?: string | null;
+  image?: string;
+  categoryId: number;
+  extras?: { name: string; price: number }[];
 };
 
 type OptionItem = {
@@ -53,12 +56,7 @@ export default function AnimatedModalWrapper({
   totalPrice,
   resetExtras,
 }: AnimatedModalWrapperProps) {
-  const toggleCheck = (
-    name: string,
-    list: string[],
-    setList: (val: string[]) => void,
-    limit: number
-  ) => {
+  const toggleCheck = (name: string, list: string[], setList: (val: string[]) => void, limit: number) => {
     if (list.includes(name)) {
       setList(list.filter((item) => item !== name));
     } else if (list.length < limit) {
@@ -96,10 +94,7 @@ export default function AnimatedModalWrapper({
     <AnimatePresence>
       {isOpen && (
         <div>
-          <div
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998]"
-            onClick={onClose}
-          ></div>
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998]" onClick={onClose}></div>
 
           <motion.div
             initial={isDesktop ? { x: "100%" } : { y: "100%" }}
@@ -112,7 +107,6 @@ export default function AnimatedModalWrapper({
                 : "bottom-0 left-0 right-0 max-h-[100%]"
             }`}
           >
-
             <div className="flex justify-between items-center mb-4">
               <button onClick={onClose}>✕</button>
             </div>
@@ -126,12 +120,8 @@ export default function AnimatedModalWrapper({
               <h2 className="text-3xl font-bold" style={{ fontFamily: "Tagesschrift, serif" }}>
                 {selectedProduct.name}
               </h2>
-              <span className="text-white text-center px-4 mb-2 break-words">
-                {selectedProduct.description}
-              </span>
-              <span className="text-lg font-bold text-center mt-0.5 mb-4">
-                ${selectedProduct.price.toFixed(2)}
-              </span>
+              <span className="text-white text-center px-4 mb-2 break-words">{selectedProduct.description}</span>
+              <span className="text-lg font-bold text-center mt-0.5 mb-4">${selectedProduct.price.toFixed(2)}</span>
             </div>
 
             <div className="overflow-y-auto flex-1 pr-2 space-y-4 scroll-dark">
@@ -151,7 +141,13 @@ export default function AnimatedModalWrapper({
                         />
                         <span className="w-5 h-5 mr-3 rounded border border-gray-400 flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500">
                           {isChecked && (
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                            >
                               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
                           )}
@@ -182,7 +178,13 @@ export default function AnimatedModalWrapper({
                         />
                         <span className="w-5 h-5 mr-3 rounded border border-gray-400 flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500">
                           {isChecked && (
-                            <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                            >
                               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
                           )}
@@ -257,8 +259,11 @@ export default function AnimatedModalWrapper({
             <div className="mt-4">
               <AddToCartButton
                 setIsOpen={onClose}
-                selectedProduct={{ ...selectedProduct, extras: buildExtras() }}
-                unitPrice={totalPrice.toFixed(2)}
+                selectedProduct={{
+                  ...selectedProduct,
+                  extras: buildExtras(),
+                }}
+                unitPrice={totalPrice}
                 resetExtras={resetExtras}
               />
             </div>

@@ -8,6 +8,7 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { BASE_URL } from "@/api";
 import Footer from "@/components/Footer";
 import ConfirmModal from "@/components/Modal";
+import SpinnerModal from "@/components/SpinnerModal";
 
 // Esquemas con Zod
 const loginSchema = z.object({
@@ -35,6 +36,7 @@ const registerSchema = z
 export default function LoginPage() {
   const navigate = useNavigate();
   useDocumentTitle("Burguer Station");
+  const [isLoading, setIsLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [form, setForm] = useState({
@@ -54,6 +56,7 @@ export default function LoginPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setIsLoading(true);
     e.preventDefault();
     setFormErrors({});
 
@@ -62,11 +65,12 @@ export default function LoginPage() {
 
     const result = schema.safeParse(dataToValidate);
 
+    // Formateamos el error proveniente de Zod (schema validator)
     if (!result.success) {
       const formatted = result.error.format();
       const errors: Record<string, string> = {};
 
-      for (const key in formatted) {
+      for (const key of Object.keys(formatted) as (keyof typeof formatted)[]) {
         if (key !== "_errors" && formatted[key]?._errors?.[0]) {
           errors[key] = formatted[key]._errors[0];
         }
@@ -87,7 +91,9 @@ export default function LoginPage() {
           password: form.password,
         };
 
-    const endpoint = isRegister ? `${BASE_URL}/users` : `${BASE_URL}/auth/login`;
+    const endpoint = isRegister
+      ? `${BASE_URL}/users`
+      : `${BASE_URL}/auth/login`;
 
     try {
       const response = await axios.post(endpoint, payload, {
@@ -95,7 +101,6 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
       });
-
 
       if (isRegister && response.data.statusCode === 201) {
         setForm({
@@ -125,6 +130,8 @@ export default function LoginPage() {
           general: error?.response?.data?.message || "Error inesperado al comunicarse con el servidor",
         });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -141,6 +148,8 @@ export default function LoginPage() {
         message="Tu cuenta fue creada correctamente. Ahora puedes iniciar sesión."
         buttonText="Iniciar sesión"
       />
+
+      <SpinnerModal isOpen={isLoading} />
 
       <div className="h-screen bg-black flex flex-col p-4">
         {/* <div className="h-screen bg-black flex flex-col justify-start items-center p-4 md:h-3/4 pb-0"> */}

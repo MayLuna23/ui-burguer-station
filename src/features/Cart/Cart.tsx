@@ -104,15 +104,8 @@ export default function CartSidebar() {
                       </div>
                     ))}
                   </div>
-
                   {/* Total y botón */}
                   <div className=" pt-4 mt-4">
-                    {/* <div className="flex justify-end text-sm font-semibold text-gray-700 w1/2">
-                    <span>Total:</span>
-                    <span className="text-orange-600 ml-3.5">
-                      ${cartItems.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2)}
-                    </span>
-                  </div> */}
                     <Link to="/checkout" onClick={() => setIsOpen(false)}>
                       <button className="flex justify-between pl-12 pr-12  w-full bg-orange-500  font-semibold py-3 rounded-xl shadow-md mt-4">
                         <span className="text-white flex">Pagar</span>

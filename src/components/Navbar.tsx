@@ -1,24 +1,15 @@
-import { ArrowLeft, LogOut, ShoppingCart, TrainFront } from "lucide-react";
-import { useCart } from "@/context/CartContext";
-import { useEffect, useState } from "react";
+import { ArrowLeft, LogOut } from "lucide-react";
 import CartSidebar from "@/features/Cart/Cart";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
-  const { cartItems } = useCart();
-  const [totalItems, setTotalItems] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const { userName, logout } = useAuth();
 
   const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   const name = userName ? capitalize(userName.split(" ")[0]) : "Invitado";
-
-  useEffect(() => {
-    const total = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    setTotalItems(total);
-  }, [cartItems]);
 
   const isCheckoutPage = location.pathname === "/checkout";
 

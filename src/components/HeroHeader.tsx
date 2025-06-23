@@ -1,5 +1,3 @@
-// components/HeroHeader.tsx
-
 const circles = [
   { size: "w-6 h-6", top: "top-10", left: "left-10", delay: "delay-0" },
   { size: "w-4 h-4", top: "top-20", left: "left-1/3", delay: "delay-100" },
@@ -16,7 +14,7 @@ const circles = [
 
 export default function HeroHeader() {
   return (
-    <header className="relative w-full h-60 md:h-80 bg-black overflow-hidden">
+    <header className="relative w-full h-40 md:h-52 bg-black overflow-hidden">
       <div className="grid place-content-center relative z-[30]">
         <img
           src="/public/logo.png"
@@ -29,13 +27,13 @@ export default function HeroHeader() {
         />
       </div>
       <h1
-        className="text-white text-center z-[30] text-6xl md:text-8xl relative"
+        className="text-white text-center z-[30] text-5xl md:text-6xl relative"
         style={{ fontFamily: "Tagesschrift, serif" }}
       >
         Burger
       </h1>
       <h1
-        className="text-white text-center z-[30] text-6xl md:text-8xl relative"
+        className="text-white text-center z-[30] text-5xl md:text-6xl relative"
         style={{ fontFamily: "Tagesschrift, serif" }}
       >
         Station

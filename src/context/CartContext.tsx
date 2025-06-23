@@ -7,11 +7,12 @@ type Product = {
   product_id: number;
   name: string;
   price: number;
-  image: string;
+  image?: string;
   categoryId: number;
   description?: string | null;
   quantity?: number;
   extras?: { name: string; price: number }[];
+  totalPrice: number;
 };
 
 type CartItem = Product & { quantity: number; totalPrice: number };

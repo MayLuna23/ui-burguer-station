@@ -9,7 +9,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 export default function AppRouter() {
   return (
     <Routes>
-      {/* <Route path="/" element={ <Home /> } /> */}
       <Route
         path="/"
         element={
