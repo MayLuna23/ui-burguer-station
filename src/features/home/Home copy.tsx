@@ -5,7 +5,6 @@ import AnimatedModalWrapper from "@/components/AnimatedModalWrapper";
 import HeroHeader from "@/components/HeroHeader";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { BASE_URL } from "@/api";
-import Footer from "@/components/Footer";
 
 export interface Product {
   product_id: number;
@@ -183,7 +182,6 @@ export default function Home() {
           />
         )}
       </div>
-      <Footer />
     </>
   );
 }

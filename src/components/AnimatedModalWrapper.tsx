@@ -1,4 +1,3 @@
-// components/AnimatedModalWrapper.tsx
 import { AnimatePresence, motion } from "framer-motion";
 import { AddToCartButton } from "@/features/total/Total";
 
@@ -107,36 +106,37 @@ export default function AnimatedModalWrapper({
             animate={isDesktop ? { x: 0 } : { y: 0 }}
             exit={isDesktop ? { x: "100%" } : { y: "100%" }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className={`fixed z-[9999] bg-black text-white shadow-2xl overflow-y-auto p-6 rounded-t-3xl ${
+            className={`fixed z-[9999] bg-black text-white shadow-2xl p-6 rounded-t-3xl flex flex-col ${
               isDesktop
-                ? "top-0 right-0 h-full rounded-none rounded-l-3xl shadow-[0_0_40px_#f97316]"
+                ? "top-0 right-0 h-full w-[400px] rounded-none rounded-l-3xl shadow-[0_0_40px_#f97316]"
                 : "bottom-0 left-0 right-0 max-h-[100%]"
             }`}
           >
+
             <div className="flex justify-between items-center mb-4">
               <button onClick={onClose}>✕</button>
             </div>
 
-            <div className="lg:h-full">
-              <div className="flex flex-col justify-center items-center mb-4 lg:mb-0 lg:flex-1 lg:justify-center max-w-md mx-auto">
-                <img
-                  src={`${selectedProduct.product_id}.webp`}
-                  alt={selectedProduct.name}
-                  className="h-64 object-contain mb-2"
-                />
-                <h2 className="text-3xl font-bold" style={{ fontFamily: "Tagesschrift, serif" }}>
-                  {selectedProduct.name}
-                </h2>
-                <span className="text-white text-center spanx-4 mb-2 break-words">
-                  {selectedProduct.description}
-                </span>
-                <span className="text-lg font-bold text-center mt-0.5 mb-4">
-                  ${selectedProduct.price.toFixed(2)}
-                </span>
-              </div>
+            <div className="flex flex-col justify-center items-center mb-4 lg:mb-0 lg:flex-none max-w-md mx-auto">
+              <img
+                src={`${selectedProduct.product_id}.webp`}
+                alt={selectedProduct.name}
+                className="h-64 object-contain mb-2"
+              />
+              <h2 className="text-3xl font-bold" style={{ fontFamily: "Tagesschrift, serif" }}>
+                {selectedProduct.name}
+              </h2>
+              <span className="text-white text-center px-4 mb-2 break-words">
+                {selectedProduct.description}
+              </span>
+              <span className="text-lg font-bold text-center mt-0.5 mb-4">
+                ${selectedProduct.price.toFixed(2)}
+              </span>
+            </div>
 
+            <div className="overflow-y-auto flex-1 pr-2 space-y-4 scroll-dark">
               {/* ADICIONES */}
-              <div className="mb-4">
+              <div>
                 <span className="font-bold text-lg">Adiciones (máximo 3)</span>
                 {options.adiciones.map((item) => {
                   const isChecked = adiciones.includes(item.name);
@@ -167,7 +167,7 @@ export default function AnimatedModalWrapper({
               </div>
 
               {/* SALSAS */}
-              <div className="mb-4">
+              <div>
                 <span className="font-bold text-lg">Salsas (máximo 2)</span>
                 {options.salsas.map((item) => {
                   const isChecked = salsas.includes(item.name);
@@ -198,7 +198,7 @@ export default function AnimatedModalWrapper({
               </div>
 
               {/* PAPAS */}
-              <div className="mb-4">
+              <div>
                 <span className="font-bold text-lg">Tipo de Papas</span>
                 {options.papas.map((item) => {
                   const isSelected = papa === item.name;
@@ -226,7 +226,7 @@ export default function AnimatedModalWrapper({
               </div>
 
               {/* BEBIDAS */}
-              <div className="mb-4">
+              <div>
                 <span className="font-bold text-lg">Bebida</span>
                 {options.bebidas.map((item) => {
                   const isSelected = bebida === item.name;
@@ -252,7 +252,9 @@ export default function AnimatedModalWrapper({
                   );
                 })}
               </div>
+            </div>
 
+            <div className="mt-4">
               <AddToCartButton
                 setIsOpen={onClose}
                 selectedProduct={{ ...selectedProduct, extras: buildExtras() }}

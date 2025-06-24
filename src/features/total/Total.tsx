@@ -56,7 +56,7 @@ export const AddToCartButton = ({ unitPrice, selectedProduct, setIsOpen, resetEx
   };
 
   return (
-    <div className="pl-3 pt-3 pr-3 pb-2 space-x-2 flex items-center lg:w-max:42 bottom-0 left-0 w-full bg-black z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] ">
+    <div className="  pl-3 pt-3 pr-3 pb-2 space-x-2 flex items-center lg:w-max:42 bottom-0 left-0 w-full bg-black z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] ">
     {/* <div className="flex items-center space-x-2 "> */}
       {/* Contador */}
       <div className="flex items-center bg-gray-100 rounded-xl px-4 py-2">

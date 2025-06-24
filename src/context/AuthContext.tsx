@@ -1,6 +1,7 @@
 // src/context/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "@/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -43,7 +44,7 @@ const logout = () => {
     }
 
     try {
-      await axios.get("http://localhost:3000/auth/verify", {
+      await axios.get(`${BASE_URL}/auth/verify`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

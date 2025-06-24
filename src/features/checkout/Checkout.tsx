@@ -5,8 +5,11 @@ import Navbar from "@/components/Navbar";
 import { useCart } from "@/context/CartContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { BASE_URL } from "@/api";
 
 export default function Checkout() {
+  useDocumentTitle("Checkout");
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
@@ -31,23 +34,23 @@ export default function Checkout() {
 
     try {
       const token = localStorage.getItem("token");
-      const result = await axios.post("http://localhost:3000/email/send", emailData, {
+      const result = await axios.post(`${BASE_URL}/email/send`, emailData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(result.data.statusCode)
-
+  
       if (result.data.statusCode === 200) {
         setShowConfirmModal(true);
-        clearCart()
-        setIsEmailSent(true)
+        clearCart();
+        setIsEmailSent(true);
       } else {
-        setIsEmailSent(false)
+        setIsEmailSent(false);
+        setShowConfirmModal(true);
       }
-      
     } catch (error) {
-      console.error("Error al enviar el pedido:", error);
+        setIsEmailSent(false);
+        setShowConfirmModal(true);
     } finally {
       setShowSpinner(false);
     }
@@ -57,14 +60,23 @@ export default function Checkout() {
     <>
       <Navbar />
       <SpinnerModal isOpen={showSpinner} />
-      <ConfirmModal isOpen={showConfirmModal} success={isEmailSent} onClose={() => {
-        setShowConfirmModal(false);
-        navigate("/");
-      }} />
+      <ConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        icon={isEmailSent ? "success" : "error"}
+        title={isEmailSent ? "¡Pedido enviado!" : "Error al enviar"}
+        message={
+          isEmailSent
+            ? "Tu pedido ha sido enviado correctamente. Pronto lo recibirás."
+            : "Hubo un problema al enviar el pedido. Intenta nuevamente."
+        }
+        buttonText={isEmailSent ? "Volver al inicio" : "Aceptar"}
+        navigateTo={isEmailSent ? "/" : null}
+      />
 
       <div className="h-[calc(100vh-64px)] bg-black py-5 px-4">
         <div className="max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-md flex flex-col h-[87vh]">
-          <span className="text-2xl font-bold mb-4 text-center mb-4">Revisar Pedido</span>
+          <span className="text-2xl font-bold text-center mb-4">Revisar Pedido</span>
 
           {cartItems.length === 0 ? (
             <p className="text-center text-gray-500 flex-1">Tu carrito está vacío.</p>
@@ -73,7 +85,11 @@ export default function Checkout() {
               <div className="space-y-6 overflow-y-auto pr-2 flex-1 scrollbar-light">
                 {cartItems.map((item, index) => (
                   <div key={index} className="flex gap-4 border-b pb-4">
-                    <img src={`${item.product_id}.webp`} alt={item.name} className="w-1/4 h-24 object-contain rounded" />
+                    <img
+                      src={`${item.product_id}.webp`}
+                      alt={item.name}
+                      className="w-1/4 h-24 object-contain rounded"
+                    />
                     <div className="flex-1 flex flex-col justify-between h-full">
                       <div>
                         <h2 className="text-lg font-semibold flex justify-between">
@@ -88,7 +104,7 @@ export default function Checkout() {
                               {item.extras.map((extra, idx) => (
                                 <li key={idx} className="text-xs text-gray-500 flex justify-between">
                                   <p>{extra.name}</p>
-                                  <p className="mr-2" >(${extra.price.toFixed(2)})</p>
+                                  <p className="mr-2">(${extra.price.toFixed(2)})</p>
                                 </li>
                               ))}
                             </ul>
@@ -99,9 +115,7 @@ export default function Checkout() {
                       </div>
                       <div className="mt-2 flex justify-between items-center text-sm">
                         <span>Cantidad: {item.quantity}</span>
-                        <span className="font-bold text-orange-600 mr-2">
-                          Total: ${item.totalPrice.toFixed(2)}
-                        </span>
+                        <span className="font-bold text-orange-600 mr-2">Total: ${item.totalPrice.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
