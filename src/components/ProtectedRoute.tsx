@@ -11,7 +11,7 @@ if (loading) {
   return (
     <div className="flex flex-col pt-16 items-center h-screen bg-black">
       <HeroHeader />
-      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+      <div className=" mt-20 w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }

@@ -12,19 +12,26 @@ const circles = [
   { size: "w-3 h-3", top: "top-[5%]", left: "left-[90%]", delay: "delay-[1300ms]" },
 ];
 
-export default function HeroHeader() {
+type showLogoType = {
+  showLogo?: boolean;
+  height?: string;
+};
+
+export default function HeroHeader({ showLogo = true, height = "40" }: showLogoType) {
   return (
-    <header className="relative w-full h-40 md:h-52 bg-black overflow-hidden">
+    <header className={`relative w-full md:h-52 bg-black overflow-hidden h-${height}`}>
       <div className="grid place-content-center relative z-[30]">
-        <img
-          src="/logo.webp"
-          alt="Burger logo"
-          className=" w-30 h-14 md:w-36 md:h-18 rounded-full drop-shadow-[0_0_40px_#000000]"
-          style={{
-            WebkitMaskImage: "radial-gradient(circle at center, black 40%, transparent 70%)",
-            maskImage: "radial-gradient(circle at center, black 40%, transparent 70%)",
-          }}
-        />
+        {showLogo && (
+          <img
+            src="/logo.webp"
+            alt="Burger logo"
+            className=" w-30 h-14 md:w-36 md:h-18 rounded-full drop-shadow-[0_0_40px_#000000]"
+            style={{
+              WebkitMaskImage: "radial-gradient(circle at center, black 40%, transparent 70%)",
+              maskImage: "radial-gradient(circle at center, black 40%, transparent 70%)",
+            }}
+          />
+        )}
       </div>
       <h1
         className="text-white text-center z-[30] text-5xl md:text-6xl relative"

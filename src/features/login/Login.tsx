@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -39,6 +39,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -55,8 +56,16 @@ export default function LoginPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+    useEffect(() => {
+      const handleResize = () => {
+        setIsDesktop(window.innerWidth >= 440);
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
-    setIsLoading(true);
     e.preventDefault();
     setFormErrors({});
 
@@ -91,9 +100,7 @@ export default function LoginPage() {
           password: form.password,
         };
 
-    const endpoint = isRegister
-      ? `${BASE_URL}/users`
-      : `${BASE_URL}/auth/login`;
+    const endpoint = isRegister ? `${BASE_URL}/users` : `${BASE_URL}/auth/login`;
 
     try {
       const response = await axios.post(endpoint, payload, {
@@ -153,13 +160,13 @@ export default function LoginPage() {
 
       <div className="h-screen bg-black flex flex-col p-4">
         {/* <div className="h-screen bg-black flex flex-col justify-start items-center p-4 md:h-3/4 pb-0"> */}
-        <HeroHeader />
-        <div className="flex-1 flex flex-col items-center justify-start overflow-y-auto pt-6 pr-3 pl-3 ">
+        <HeroHeader showLogo={isDesktop} height="30" />
+        <div className="  flex-1 flex flex-col items-center  overflow-y-auto pt-16 md:pt-20 pr-3 pl-3 ">
           {/* <div className="flex flex-col justify-between w-full max-w-md  bg-[#111] rounded-2xl shadow-[0_0_40px_#f97316] p-8 ring-2 ring-orange-500 mt-10"> */}
-          <div className="w-full max-w-md  bg-[#111] rounded-2xl shadow-[0_0_40px_#f97316] p-8 ring-2 ring-orange-500">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
+          <div className="w-full max-w-md  bg-[#111] rounded-2xl shadow-[0_0_40px_#f97316] p-4 ring-2 ring-orange-500">
+            <span className="text-2xl font-bold text-white mb-4 flex justify-center">
               {isRegister ? "Crear cuenta" : "Iniciar sesión"}
-            </h2>
+            </span>
 
             {formErrors.general && (
               <div
@@ -174,7 +181,7 @@ export default function LoginPage() {
               {/* Nombre */}
               {isRegister && (
                 <div>
-                  {formErrors.name && <p className="text-orange-600 text-sm font-medium mb-1">{formErrors.name}</p>}
+                  {formErrors.name && <span className="text-orange-600 text-sm font-medium mb-1">{formErrors.name}</span>}
                   <input
                     type="text"
                     name="name"
@@ -188,7 +195,7 @@ export default function LoginPage() {
 
               {/* Correo */}
               <div>
-                {formErrors.email && <p className="text-orange-600 text-sm font-medium mb-1">{formErrors.email}</p>}
+                {formErrors.email && <span className="text-orange-600 text-sm font-medium mb-1">{formErrors.email}</span>}
                 <input
                   //   type="email"
                   name="email"
@@ -202,7 +209,7 @@ export default function LoginPage() {
               {/* Contraseña */}
               <div>
                 {formErrors.password && (
-                  <p className="text-orange-600 text-sm font-medium mb-1">{formErrors.password}</p>
+                  <span className="text-orange-600 text-sm font-medium mb-1">{formErrors.password}</span>
                 )}
                 <input
                   type="password"
@@ -218,7 +225,7 @@ export default function LoginPage() {
               {isRegister && (
                 <div>
                   {formErrors.confirmPassword && (
-                    <p className="text-orange-600 text-sm font-medium mb-1">{formErrors.confirmPassword}</p>
+                    <span className="text-orange-600 text-sm font-medium mb-1">{formErrors.confirmPassword}</span>
                   )}
                   <input
                     type="password"
@@ -259,9 +266,7 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
-        <Footer />
-        {/* <div className="w-full h-1/3 md:h-2/5 mt-10  flex flex-col justify-end"> */}
-        {/* </div> */}
+        {isDesktop && (<Footer />)}
       </div>
     </>
   );
