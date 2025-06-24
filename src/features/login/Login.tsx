@@ -67,12 +67,15 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormErrors({});
-
     const schema = isRegister ? registerSchema : loginSchema;
     const dataToValidate = isRegister ? form : { email: form.email, password: form.password };
-
     const result = schema.safeParse(dataToValidate);
+    if (result.success) {
+      setIsLoading(true);
+    }
+    setFormErrors({});
+
+
 
     // Formateamos el error proveniente de Zod (schema validator)
     if (!result.success) {
