@@ -49,7 +49,7 @@ export default function Home() {
 
   useEffect(() => {
   const fetchProductsAndOptions = async () => {
-    setIsLoading(true); // 🔸 Inicia carga
+    setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(`${BASE_URL}/categories`, {
@@ -79,7 +79,7 @@ export default function Home() {
       console.error("Error al obtener productos u opciones:", error);
       setErrMessg("Hubo un problema cargando los productos.");
     } finally {
-      setIsLoading(false); // 🔸 Finaliza carga
+      setIsLoading(false); 
     }
   };
 
@@ -133,7 +133,7 @@ export default function Home() {
   }, [isOpen]);
 
   return (
-  <div className="flex flex-col min-h-screen bg-black">
+  <div className="pt-[68px] flex flex-col min-h-screen bg-black">
     <Navbar />
     <HeroHeader />
 

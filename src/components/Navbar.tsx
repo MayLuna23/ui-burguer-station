@@ -14,7 +14,7 @@ export default function Navbar() {
   const isCheckoutPage = location.pathname === "/checkout";
 
   return (
-    <nav className="bg-black shadow-md px-4 py-3 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-black shadow-md px-4 py-3 flex items-center justify-between">
       {/* Logo y botón de volver */}
       <div className="flex items-center space-x-2">
         {isCheckoutPage && (

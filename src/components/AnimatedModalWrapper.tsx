@@ -111,17 +111,17 @@ export default function AnimatedModalWrapper({
               <button onClick={onClose}>✕</button>
             </div>
 
-            <div className="flex flex-col justify-center items-center mb-4 lg:mb-0 lg:flex-none max-w-md mx-auto">
+            <div className="flex flex-col justify-center items-center mb-2 md:mb-3 lg:mb-0 lg:flex-none max-w-md mx-auto">
               <img
                 src={`${selectedProduct.product_id}.webp`}
                 alt={selectedProduct.name}
-                className="h-64 object-contain mb-2"
+                className="md:h-64 h-40 object-contain mb-2"
               />
-              <h2 className="text-3xl font-bold" style={{ fontFamily: "Tagesschrift, serif" }}>
+              <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "Tagesschrift, serif" }}>
                 {selectedProduct.name}
               </h2>
               <span className="text-white text-center px-4 mb-2 break-words">{selectedProduct.description}</span>
-              <span className="text-lg font-bold text-center mt-0.5 mb-4">${selectedProduct.price.toFixed(2)}</span>
+              <span className="text-lg font-bold text-center mt-0.5 lg:mb-4">${selectedProduct.price.toFixed(2)}</span>
             </div>
 
             <div className="overflow-y-auto flex-1 pr-2 space-y-4 scroll-dark">

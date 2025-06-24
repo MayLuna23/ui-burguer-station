@@ -54,7 +54,7 @@ export default function Checkout() {
   };
 
   return (
-    <>
+    <div className="pt-[64px]">
       <Navbar />
       <SpinnerModal isOpen={showSpinner} />
       <ConfirmModal
@@ -72,7 +72,7 @@ export default function Checkout() {
       />
 
       <div className="h-[calc(100vh-64px)] bg-black py-5 px-4">
-        <div className="max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-md flex flex-col h-[87vh]">
+        <div className="max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-md flex flex-col h-[82vh]">
           <span className="text-2xl font-bold text-center mb-4">Revisar Pedido</span>
 
           {cartItems.length === 0 ? (
@@ -136,6 +136,6 @@ export default function Checkout() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
