@@ -17,7 +17,7 @@ export default function HeroHeader() {
     <header className="relative w-full h-40 md:h-52 bg-black overflow-hidden">
       <div className="grid place-content-center relative z-[30]">
         <img
-          src="/public/logo.webp"
+          src="/logo.webp"
           alt="Burger logo"
           className=" w-30 h-14 md:w-36 md:h-18 rounded-full drop-shadow-[0_0_40px_#000000]"
           style={{
