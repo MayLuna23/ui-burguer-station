@@ -31,6 +31,7 @@ export interface Options {
 export default function Home() {
   useDocumentTitle("Menu - BS");
   const [errMessg, setErrMessg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [adiciones, setAdiciones] = useState<string[]>([]);
@@ -47,39 +48,44 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const fetchProductsAndOptions = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`${BASE_URL}/categories`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const fetchProductsAndOptions = async () => {
+    setIsLoading(true); // 🔸 Inicia carga
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${BASE_URL}/categories`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (response.data.statusCode === 200) {
-          const categories: Category[] = response.data.data;
+      if (response.data.statusCode === 200) {
+        const categories: Category[] = response.data.data;
 
-          const hamburguesas = categories.find((cat) => cat.category_id === 1);
-          if (hamburguesas?.products) {
-            setProducts(hamburguesas.products);
-          }
-
-          const adiciones = categories.find((cat) => cat.category_id === 2)?.products || [];
-          const papas = categories.find((cat) => cat.category_id === 3)?.products || [];
-          const bebidas = categories.find((cat) => cat.category_id === 4)?.products || [];
-          const salsas = categories.find((cat) => cat.category_id === 5)?.products || [];
-
-          setOptions({ adiciones, salsas, papas, bebidas });
-        } else {
-          setErrMessg("Error del servidor, contacta al equipo de Burger Station!")
+        const hamburguesas = categories.find((cat) => cat.category_id === 1);
+        if (hamburguesas?.products) {
+          setProducts(hamburguesas.products);
         }
-      } catch (error) {
-        console.error("Error al obtener productos u opciones:", error);
-      }
-    };
 
-    fetchProductsAndOptions();
-  }, []);
+        const adiciones = categories.find((cat) => cat.category_id === 2)?.products || [];
+        const papas = categories.find((cat) => cat.category_id === 3)?.products || [];
+        const bebidas = categories.find((cat) => cat.category_id === 4)?.products || [];
+        const salsas = categories.find((cat) => cat.category_id === 5)?.products || [];
+
+        setOptions({ adiciones, salsas, papas, bebidas });
+      } else {
+        setErrMessg("Error del servidor, contacta al equipo de Burger Station!");
+      }
+    } catch (error) {
+      console.error("Error al obtener productos u opciones:", error);
+      setErrMessg("Hubo un problema cargando los productos.");
+    } finally {
+      setIsLoading(false); // 🔸 Finaliza carga
+    }
+  };
+
+  fetchProductsAndOptions();
+}, []);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -127,11 +133,16 @@ export default function Home() {
   }, [isOpen]);
 
   return (
-    <>
-      <Navbar />
-      <HeroHeader />
+  <div className="flex flex-col min-h-screen bg-black">
+    <Navbar />
+    <HeroHeader />
 
-      <div className="relative   bg-black p-4">
+    <div className="relative p-4 flex-grow">
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center h-full">
+          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : (
         <main className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:max-w-7xl md:m-auto">
           {products.map((product) => (
             <div
@@ -156,34 +167,37 @@ export default function Home() {
             </div>
           ))}
         </main>
+      )}
 
-        {errMessg && (
-          <div>
-            <h1 style={{ fontFamily: "Tagesschrift, serif" }} className="text-white text-center">{errMessg}</h1>
-          </div>
-        )}
+      {errMessg && (
+        <div>
+          <h1 style={{ fontFamily: "Tagesschrift, serif" }} className="text-white text-center">{errMessg}</h1>
+        </div>
+      )}
 
-        {selectedProduct && (
-          <AnimatedModalWrapper
-            isOpen={isOpen}
-            isDesktop={isDesktop}
-            onClose={() => setIsOpen(false)}
-            selectedProduct={selectedProduct}
-            adiciones={adiciones}
-            setAdiciones={setAdiciones}
-            salsas={salsas}
-            setSalsas={setSalsas}
-            papa={papa}
-            setPapa={setPapa}
-            bebida={bebida}
-            setBebida={setBebida}
-            options={options}
-            totalPrice={totalPrice}
-            resetExtras={resetExtras}
-          />
-        )}
-      </div>
-      <Footer />
-    </>
-  );
+      {selectedProduct && (
+        <AnimatedModalWrapper
+          isOpen={isOpen}
+          isDesktop={isDesktop}
+          onClose={() => setIsOpen(false)}
+          selectedProduct={selectedProduct}
+          adiciones={adiciones}
+          setAdiciones={setAdiciones}
+          salsas={salsas}
+          setSalsas={setSalsas}
+          papa={papa}
+          setPapa={setPapa}
+          bebida={bebida}
+          setBebida={setBebida}
+          options={options}
+          totalPrice={totalPrice}
+          resetExtras={resetExtras}
+        />
+      )}
+    </div>
+
+    <Footer />
+  </div>
+);
+
 }
